@@ -33,11 +33,13 @@ app.get("/", (req, res) => {
 //     console.log(`Running at ${host}:${port}`)
 // })
 
+const PORT = process.env.PORT || 3000;
+
 let httpServer = http.createServer(app)
-httpServer.listen(80)
+httpServer.listen(PORT)
 
 let httpsServer = https.createServer({
     key: privateKey,
     cert:certificate
 },app)
-httpsServer.listen(443)
+httpsServer.listen(PORT)

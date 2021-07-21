@@ -24,6 +24,7 @@
     "node-querybuilder": "^2.1.1",
     "nodemon": "^2.0.4",
     "pg": "^8.6.0",
+    "pm2": "^5.1.0",
     "simple-hl7": "^3.2.1",
     "trim-characters": "^1.4.0",
     "utf8": "^3.0.0",
