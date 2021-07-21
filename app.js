@@ -34,6 +34,7 @@ app.get("/", (req, res) => {
 // })
 
 const PORT = process.env.PORT || 3000;
+const HTTPS_PORT = process.env.PORT || 3443;
 
 let httpServer = http.createServer(app)
 httpServer.listen(PORT)
@@ -42,4 +43,4 @@ let httpsServer = https.createServer({
     key: privateKey,
     cert:certificate
 },app)
-httpsServer.listen(PORT)
+httpsServer.listen(HTTPS_PORT)
