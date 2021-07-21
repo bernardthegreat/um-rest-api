@@ -61,11 +61,16 @@ router.post("/register-student", (req, res) => {
             '${req.body.fbLink}')
           `
         )
-        res.send(students)
+        res.send({
+          message: 'Success registering student',
+          error: null
+        });
         done()
       } catch (error) {
-        console.log(error)
-        res.send({ error });
+        res.send({
+          message: undefined,
+          error: error
+        });
       }
     });
   })();
