@@ -28,17 +28,48 @@ router.get("/", (req, res) => {
   //   return;
   // }
   void (async function () {
-    try {
-      await pgConfig.connect();
-      const students = await pgConfig.query('SELECT * FROM um_student_information.students')
-      pgConfig.end();
-      res.send(students.rows)
-    } catch (error) {
-      res.send({ error });
-    }
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const students = await pgConfig.query('SELECT id, first_name, middle_name, trim(last_name), email_address, active, contact_number, fb_link, student_id FROM um_student_information.students')
+        res.send(students.rows)
+        done()
+      } catch (error) {
+        console.log(error)
+        res.send({ error });
+      }
+    });
   })();
 });
 
+
+router.post("/register-student", (req, res) => {
+  // if (!appMain.checkAuth(req.query.auth)) {
+  //   res.send({ error: appMain.error });
+  //   return;
+  // }
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const students = await pgConfig.query(
+          `CALL um_student_information.sp_InsertStudent (
+            '${req.body.studentNo}',
+            '${req.body.firstName}',
+            '${req.body.middleName}',
+            '${req.body.lastName}',
+            '${req.body.email}',
+            '${req.body.contactNo}',
+            '${req.body.fbLink}')
+          `
+        )
+        res.send(students)
+        done()
+      } catch (error) {
+        console.log(error)
+        res.send({ error });
+      }
+    });
+  })();
+});
 
 
 module.exports = router;
