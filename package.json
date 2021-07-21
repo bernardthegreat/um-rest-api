@@ -30,5 +30,8 @@
     "utf8": "^3.0.0",
     "winston": "^3.3.3",
     "ws": "^7.5.3"
+  },
+  "devDependencies": {
+    "@vercel/node": "^1.11.1"
   }
 }
