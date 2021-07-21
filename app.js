@@ -6,9 +6,6 @@ const https = require('https')
 const http = require('http')
 const { Pool, Client } = require('pg')
 
-const privateKey = fs.readFileSync('keys/84452908_uermwebapi.key')
-const certificate = fs.readFileSync('keys/84452908_uermwebapi.cert')
-
 const app = express();
 
 const studentRoute = require('./routes/students')
@@ -36,10 +33,10 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 let httpServer = http.createServer(app)
-httpServer.listen(PORT)
+httpServer.listen(3000)
 
-let httpsServer = https.createServer({
-    key: privateKey,
-    cert:certificate
-},app)
-httpsServer.listen(PORT)
+// let httpsServer = https.createServer({
+//     key: privateKey,
+//     cert:certificate
+// },app)
+// httpsServer.listen(3443)
