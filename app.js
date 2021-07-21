@@ -20,7 +20,7 @@ app.use('/students', studentRoute)
 // ROUTES
 app.get("/", (req, res) => {
     res.send({
-        message: "Welcome UM Rest API"
+        message: "Welcome to UM Rest API"
     })
 });
 
