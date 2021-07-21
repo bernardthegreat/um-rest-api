@@ -34,10 +34,10 @@ app.get("/", (req, res) => {
 // })
 
 let httpServer = http.createServer(app)
-httpServer.listen(3000)
+httpServer.listen(80)
 
 let httpsServer = https.createServer({
     key: privateKey,
     cert:certificate
 },app)
-httpsServer.listen(3443)
+httpsServer.listen(443)
