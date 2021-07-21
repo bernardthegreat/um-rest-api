@@ -32,6 +32,7 @@ router.get("/", (req, res) => {
       await pgConfig.connect();
       const students = await pgConfig.query('SELECT * FROM um_student_information.students')
       pgConfig.end();
+      
       res.send(students.rows)
     } catch (error) {
       res.send({ error });
