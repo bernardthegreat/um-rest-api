@@ -30,7 +30,19 @@ router.get("/", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
-        const students = await pgConfig.query('SELECT id, first_name, middle_name, trim(last_name), email_address, active, contact_number, fb_link, student_id FROM um_student_information.students')
+        const students = await pgConfig.query(`
+          SELECT 
+            id,
+            first_name,
+            middle_name,
+            last_name,
+            email_address,
+            active, contact_number,
+            fb_link,
+            student_id,
+            datetime_created
+          FROM um_student_information.students`
+        )
         res.send(students.rows)
         done()
       } catch (error) {
