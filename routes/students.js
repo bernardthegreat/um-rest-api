@@ -54,6 +54,16 @@ router.get("/", (req, res) => {
 });
 
 
+router.get("/get-ip-address", (req, res) => {
+  var http = require('http');
+
+  http.get({'host': 'api.ipify.org', 'port': 80, 'path': '/'}, function(resp) {
+    resp.on('data', function(ip) {
+      res.send("My public IP address is: " + ip);
+    });
+  });
+});
+
 router.post("/register-student", (req, res) => {
   // if (!appMain.checkAuth(req.query.auth)) {
   //   res.send({ error: appMain.error });
