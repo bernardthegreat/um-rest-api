@@ -38,7 +38,7 @@ let httpServer = http.createServer(app)
 
 
 app.get("/ws", (req, res) => {
-  const wss = new WebSocket.Server({ server: '8080' });
+  const wss = new WebSocket.Server({ port: 8080 });
   try {
     wss.on('connection', function connection(ws) {
       ws.on('message', function incoming(message) {
