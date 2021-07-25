@@ -5,6 +5,7 @@ const cors = require('cors')
 const https = require('https')
 const http = require('http')
 const { Pool, Client } = require('pg')
+const WebSocket = require('ws');
 
 const app = express();
 
@@ -34,6 +35,22 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 let httpServer = http.createServer(app)
+
+
+app.get("/ws", (req, res) => {
+  const wss = new WebSocket.Server({ server: httpServer });
+  wss.on('connection', function connection(ws) {
+    ws.on('message', function incoming(message) {
+      wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send('FETCH DATA');
+        }
+      });
+    });
+  });
+  res.send('Websocket Connection')
+});
+
 httpServer.listen(3000)
 
 // let httpsServer = https.createServer({
