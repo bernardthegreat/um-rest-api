@@ -7,6 +7,17 @@ const winston = require('winston');
 const { Console } = require('winston/lib/winston/transports');
 const appMain = require("../auth/auth");
 
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1240276",
+  key: "685dac16b7a3bc62de54",
+  secret: "79ab6ec391d500aa4b1f",
+  cluster: "ap1",
+  useTLS: true
+});
+
+
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),

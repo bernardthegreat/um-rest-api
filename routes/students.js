@@ -40,7 +40,9 @@ router.get("/", (req, res) => {
             active, contact_number,
             fb_link,
             student_id,
-            datetime_created
+            datetime_created,
+            attendance,
+            answer
           FROM um_student_information.students`
         )
         res.send(students.rows)
@@ -98,5 +100,34 @@ router.post("/register-student", (req, res) => {
   })();
 });
 
+
+router.post("/approve-student", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const students = await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET active = '1'
+          where student_id = '${req.body.studentNo}'`
+        )
+        res.send({
+          message: 'Success registering student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: undefined,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+router.post("/attendance", (req, res) => {
+
+});
 
 module.exports = router;
