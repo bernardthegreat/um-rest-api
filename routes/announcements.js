@@ -48,7 +48,8 @@ router.get("/", (req, res) => {
             content,
             pinned,
             active,
-            datetime_created
+            datetime_created,
+            type
           FROM 
             um_student_information.announcements`
         )
