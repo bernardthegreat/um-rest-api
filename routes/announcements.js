@@ -6,13 +6,13 @@ const hl7 = require('simple-hl7');
 const winston = require('winston');
 const { Console } = require('winston/lib/winston/transports');
 const appMain = require("../auth/auth");
-
+require('dotenv/config')
 const Pusher = require("pusher");
 
 const pusher = new Pusher({
-  appId: "1240276",
-  key: "685dac16b7a3bc62de54",
-  secret: "79ab6ec391d500aa4b1f",
+  appId: process.env.PUSHER_APP_ID,
+  key: process.env.PUSHER_KEY,
+  secret: process.env.PUSHER_SECRET,
   cluster: "ap1",
   useTLS: true
 });
@@ -97,6 +97,45 @@ router.post("/add-announcement", (req, res) => {
   //   });
   // })();
 });
+
+router.post("/ask-question", (req, res) => {
+  // if (!appMain.checkAuth(req.query.auth)) {
+  //   res.send({ error: appMain.error });
+  //   return;
+  // }
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.announcements
+          SET
+            name = '${req.body.name}',
+            content = '${req.body.content}',
+            active = '${req.body.active}',
+            type = '${req.body.type}'
+          where id = '3'
+        `)
+        res.send({
+          message: 'Success adding question',
+          error: null
+        });
+        pusher.trigger("my-channel", "my-event", {
+          message: "recitation"
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+
+
 
 
 module.exports = router;

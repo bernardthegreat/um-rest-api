@@ -17,17 +17,7 @@ require('dotenv/config')
 
 function checkAuth(auth) {
   const validAuthKeys = [
-    "54inqmZQ2GUsjioM2tQmTMF1hXBv1zzw", // MOBILE
-    "cfd7CqlQF4kAr42Z4FAitavfQSx0Tbd5", // e-patients portal
-    "SjqvHXymNskzsLsclRBNZHugHzUH6qeq", // e-patients appointments
-    "qG7JotCSrFJO2eSW4RdaIPYx33ECiBs6", // webapps
-    "8SgTLojxwPX884TgT3lIgeZsufaae90O", // Hl7 Middleware
-    "7190WHUt7gzKgrRURMnoS4D7tX6Xp112", // Covid-19 Health Declaration
-    "So1DSBKffnbTKwdgIIcetg2z3GyNKeQi", // Covid Monitoring
-    "eSWHugHzUmZQ2GUsBKffyNKeNZHuSWtX", // Hospital Website
-    "FJO2qvHeSW4RIPYx33EF1hXBvdZQ2aI3", // UE Student Portal
-    "nw9cMQufX1oSBz4KfsdKMaS8ucDBVFy3", // Purchase Request
-    "54inqmcfd7Cq84TgT3lIgcDBVFy3uSWt", // Personnel Information
+    "54inqmZQ2GUsjioM2tQmTMF1hXBv1zzw",
   ];
 
   if (!auth) {

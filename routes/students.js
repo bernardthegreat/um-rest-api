@@ -23,10 +23,16 @@ const logger = winston.createLogger({
 });
 
 router.get("/", (req, res) => {
-  // if (!appMain.checkAuth(req.query.auth)) {
-  //   res.send({ error: appMain.error });
-  //   return;
-  // }
+  if (!appMain.checkAuth(req.query.auth)) {
+    res.send({ error: appMain.error });
+    return;
+  }
+
+  var sqlWhere = ''
+  if (req.query.studentNo) {
+    sqlWhere = `where student_id = '${req.query.studentNo}'`
+  }
+
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
@@ -43,7 +49,9 @@ router.get("/", (req, res) => {
             datetime_created,
             attendance,
             answer
-          FROM um_student_information.students`
+          FROM um_student_information.students
+            ${sqlWhere}
+          `
         )
         res.send(students.rows)
         done()
