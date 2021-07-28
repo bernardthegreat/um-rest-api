@@ -137,10 +137,20 @@ router.post("/ask-question", (req, res) => {
 
 
 router.get("/set-recitation", (req, res) => {
-  pusher.trigger("my-channel", "my-event", {
-    message: "recitation"
-  });
-  res.send('Recitation Message Sent')
+  try {
+    pusher.trigger("my-channel", "my-event", {
+      message: "recitation"
+    });
+    res.send({
+      message: 'Recitation Message Sent',
+      error: null
+    });
+  } catch (error) {
+    res.send({
+      message: null,
+      error: error
+    });
+  }
 });
 
 
