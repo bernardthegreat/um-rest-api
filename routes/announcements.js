@@ -140,6 +140,7 @@ router.get("/set-recitation", (req, res) => {
   pusher.trigger("my-channel", "my-event", {
     message: "recitation"
   });
+  res.send('Recitation Message Sent')
 });
 
 
