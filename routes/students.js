@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
+
 // SQL CONN
 const pgConfig = require('../config/database')
 const hl7 = require('simple-hl7');
 const winston = require('winston');
 const { Console } = require('winston/lib/winston/transports');
 const appMain = require("../auth/auth");
+var fs = require('fs');
 
 const logger = winston.createLogger({
   level: 'info',
@@ -54,6 +56,49 @@ router.get("/", (req, res) => {
           `
         )
         res.send(students.rows)
+        done()
+      } catch (error) {
+        console.log(error)
+        res.send({ error });
+      }
+    });
+  })();
+});
+
+router.get("/set-student-files", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const students = await pgConfig.query(`
+          SELECT 
+            id,
+            first_name,
+            middle_name,
+            last_name,
+            email_address,
+            active, contact_number,
+            fb_link,
+            student_id,
+            datetime_created,
+            attendance,
+            answer
+          FROM um_student_information.students`
+        )
+        res.send(students.rows)
+
+        for (var result of students.rows) {
+          const firstName = result.first_name.toUpperCase()
+          
+          const middleName = result.middle_name === 'null' ? '' : result.middle_name
+          const middleNameFinal = middleName === null ? '' : middleName.toUpperCase()
+          const lastName = result.last_name.toUpperCase()
+          const fullName = `${lastName}, ${firstName} ${middleNameFinal}`
+          var dir = `./student_files/${fullName.trim()}`;
+          if (!fs.existsSync(dir)){
+              fs.mkdirSync(dir);
+          }
+        }
+
         done()
       } catch (error) {
         console.log(error)
