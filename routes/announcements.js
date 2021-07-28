@@ -7,9 +7,10 @@ const winston = require('winston');
 const { Console } = require('winston/lib/winston/transports');
 const appMain = require("../auth/auth");
 require('dotenv/config')
-const Pusher = require("pusher");
+const { Router } = require('express');
 
-const pusher = new Pusher({
+var Pusher = require("pusher");
+var pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,
   key: process.env.PUSHER_KEY,
   secret: process.env.PUSHER_SECRET,
@@ -133,9 +134,14 @@ router.post("/ask-question", (req, res) => {
     });
   })();
 });
+router.get("/set-recitation")
 
 
-
+router.get("/set-recitation", (req, res) => {
+  pusher.trigger("my-channel", "my-event", {
+    message: "recitation"
+  });
+});
 
 
 module.exports = router;
