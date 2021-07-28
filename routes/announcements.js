@@ -134,7 +134,6 @@ router.post("/ask-question", (req, res) => {
     });
   })();
 });
-router.get("/set-recitation")
 
 
 router.get("/set-recitation", (req, res) => {
