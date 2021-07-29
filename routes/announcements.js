@@ -153,5 +153,22 @@ router.get("/set-recitation", (req, res) => {
   }
 });
 
+router.get("/remove-recitation", (req, res) => {
+  try {
+    pusher.trigger("my-channel", "my-event", {
+      message: "remove-recitation"
+    });
+    res.send({
+      message: 'Recitation Removal Message Sent',
+      error: null
+    });
+  } catch (error) {
+    res.send({
+      message: null,
+      error: error
+    });
+  }
+});
+
 
 module.exports = router;
