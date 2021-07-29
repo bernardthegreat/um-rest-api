@@ -153,7 +153,7 @@ router.get("/set-recitation", (req, res) => {
   }
 });
 
-router.get("/remove-recitation", (req, res) => {
+router.get("/remove-question-dialog", (req, res) => {
   try {
     pusher.trigger("my-channel", "my-event", {
       message: "remove-recitation"
