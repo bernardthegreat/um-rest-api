@@ -84,7 +84,8 @@ router.get("/set-student-files", (req, res) => {
             datetime_created,
             attendance,
             answer
-          FROM um_student_information.students`
+          FROM um_student_information.students
+          order by last_name asc`
         )
         res.send(studentsQuery.rows)
 
