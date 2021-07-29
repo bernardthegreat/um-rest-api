@@ -55,6 +55,7 @@ router.get("/", (req, res) => {
             birthdate
           FROM um_student_information.students
             ${sqlWhere}
+          order by last_name asc
           `
         )
         res.send(studentsQuery.rows)
