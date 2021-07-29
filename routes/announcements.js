@@ -70,33 +70,72 @@ router.post("/add-announcement", (req, res) => {
   //   res.send({ error: appMain.error });
   //   return;
   // }
-  // void (async function () {
-  //   pgConfig.connect(async function(err, client, done) {
-  //     try {
-  //       const students = await pgConfig.query(
-  //         `CALL um_student_information.sp_InsertStudent (
-  //           '${req.body.studentNo}',
-  //           '${req.body.firstName}',
-  //           '${req.body.middleName}',
-  //           '${req.body.lastName}',
-  //           '${req.body.email}',
-  //           '${req.body.contactNo}',
-  //           '${req.body.fbLink}')
-  //         `
-  //       )
-  //       res.send({
-  //         message: 'Success registering student',
-  //         error: null
-  //       });
-  //       done()
-  //     } catch (error) {
-  //       res.send({
-  //         message: undefined,
-  //         error: error
-  //       });
-  //     }
-  //   });
-  // })();
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(
+          `INSERT INTO um_student_information.announcements (
+            name,
+            content,
+            pinned,
+            active,
+            type
+          )
+          VALUES (
+            '${req.body.name}',
+            '${req.body.content}',
+            '${req.body.pinned}',
+            '${req.body.active}',
+            '${req.body.type}'
+          )`
+        )
+        res.send({
+          message: 'Success registering announcement',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+router.post("/update-announcement", (req, res) => {
+  // if (!appMain.checkAuth(req.query.auth)) {
+  //   res.send({ error: appMain.error });
+  //   return;
+  // }
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.announcements
+          SET
+            name = '${req.body.name}',
+            pinned = '${req.body.pinned}',
+            content = '${req.body.content}',
+            active = '${req.body.active}',
+            type = '${req.body.type}'
+          where id = '${req.body.announcementID}'
+        `)
+        res.send({
+          message: 'Success updating announcement',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
 });
 
 router.post("/ask-question", (req, res) => {

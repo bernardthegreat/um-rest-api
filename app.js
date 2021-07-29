@@ -11,12 +11,14 @@ const app = express();
 
 const studentRoute = require('./routes/students')
 const announcementRoute = require('./routes/announcements')
+const configurationRoute = require('./routes/configurations')
 app.use(cors())
 
 
 app.use(bodyParser.json())
 app.use('/students', studentRoute)
 app.use('/announcements', announcementRoute)
+app.use('/configurations', configurationRoute)
 
 
 // ROUTES

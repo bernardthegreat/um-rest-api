@@ -38,7 +38,7 @@ router.get("/", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
-        const students = await pgConfig.query(`
+        const studentsQuery = await pgConfig.query(`
           SELECT 
             id,
             first_name,
@@ -50,12 +50,14 @@ router.get("/", (req, res) => {
             student_id,
             datetime_created,
             attendance,
-            answer
+            answer,
+            hash_key,
+            birthdate
           FROM um_student_information.students
             ${sqlWhere}
           `
         )
-        res.send(students.rows)
+        res.send(studentsQuery.rows)
         done()
       } catch (error) {
         console.log(error)
@@ -69,7 +71,7 @@ router.get("/set-student-files", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
-        const students = await pgConfig.query(`
+        const studentsQuery = await pgConfig.query(`
           SELECT 
             id,
             first_name,
@@ -84,9 +86,9 @@ router.get("/set-student-files", (req, res) => {
             answer
           FROM um_student_information.students`
         )
-        res.send(students.rows)
+        res.send(studentsQuery.rows)
 
-        for (var result of students.rows) {
+        for (var result of studentsQuery.rows) {
           const firstName = result.first_name.toUpperCase()
           
           const middleName = result.middle_name === 'null' ? '' : result.middle_name
@@ -109,16 +111,6 @@ router.get("/set-student-files", (req, res) => {
 });
 
 
-router.get("/get-ip-address", (req, res) => {
-  var http = require('http');
-
-  http.get({'host': 'api.ipify.org', 'port': 80, 'path': '/'}, function(resp) {
-    resp.on('data', function(ip) {
-      res.send("My public IP address is: " + ip);
-    });
-  });
-});
-
 router.post("/register-student", (req, res) => {
   // if (!appMain.checkAuth(req.query.auth)) {
   //   res.send({ error: appMain.error });
@@ -127,7 +119,7 @@ router.post("/register-student", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
-        const students = await pgConfig.query(
+        await pgConfig.query(
           `CALL um_student_information.sp_InsertStudent (
             '${req.body.studentNo}',
             '${req.body.firstName}',
@@ -145,7 +137,7 @@ router.post("/register-student", (req, res) => {
         done()
       } catch (error) {
         res.send({
-          message: undefined,
+          message: null,
           error: error
         });
       }
@@ -158,7 +150,7 @@ router.post("/approve-student", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
-        const students = await pgConfig.query(`
+        await pgConfig.query(`
           UPDATE 
             um_student_information.students
           SET active = '1'
@@ -171,7 +163,40 @@ router.post("/approve-student", (req, res) => {
         done()
       } catch (error) {
         res.send({
-          message: undefined,
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+
+router.post("/update-student", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            first_name = '${req.body.firstName}',
+            middle_name = '${req.body.middleName}',
+            last_name = '${req.body.lastName}',
+            email_address = '${req.body.email}',
+            contact_number = '${req.body.contactNo}',
+            fb_link = '${req.body.fbLink}'),
+            birthdate = '${req.body.birthdate}'
+          where student_id = '${req.body.studentNo}'`
+        )
+        res.send({
+          message: 'Success registering student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
           error: error
         });
       }
@@ -180,7 +205,107 @@ router.post("/approve-student", (req, res) => {
 });
 
 router.post("/attendance", (req, res) => {
-
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            attendance = NOW()
+          where student_id = '${req.body.studentNo}'`
+        )
+        res.send({
+          message: 'Success saving attendance of student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
 });
+
+
+router.post("/secure-attendance", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const firstRand = randomString(8, '#a');
+        const secondRand = randomString(4, '#a');
+        const thirdRand = randomString(4, '#a');
+        const fourthRand = randomString(12, '#a');
+        const randomHashKey = `${firstRand}-${secondRand}-${thirdRand}-${fourthRand}`
+
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            hash_key = '${randomHashKey}'
+          where student_id = '${req.body.studentNo}'`
+        )
+        res.send({
+          hashKey: `${randomHashKey}`,
+          message: 'Success securing attendance of student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          hashKey: null,
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+
+
+
+router.post("/answer-question", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            answer = '${req.body.answer}'
+          where student_id = '${req.body.studentNo}'`
+        )
+        res.send({
+          message: 'Success saving answer of student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+
+
+
+function randomString(length, chars) {
+  var mask = '';
+  if (chars.indexOf('a') > -1) mask += 'abcdefghijklmnopqrstuvwxyz';
+  if (chars.indexOf('A') > -1) mask += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if (chars.indexOf('#') > -1) mask += '0123456789';
+  if (chars.indexOf('!') > -1) mask += '~`!@#$%^&*()_+-={}[]:";\'<>?,./|\\';
+  var result = '';
+  for (var i = length; i > 0; --i) result += mask[Math.round(Math.random() * (mask.length - 1))];
+  return result;
+}
 
 module.exports = router;
