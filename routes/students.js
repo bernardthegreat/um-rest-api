@@ -188,14 +188,14 @@ router.post("/update-student", (req, res) => {
             first_name = '${req.body.firstName}',
             middle_name = '${req.body.middleName}',
             last_name = '${req.body.lastName}',
-            email_address = '${req.body.email}',
-            contact_number = '${req.body.contactNo}',
-            fb_link = '${req.body.fbLink}'),
+            email_address = '${req.body.emailAddress}',
+            contact_number = '${req.body.contactNumber}',
+            fb_link = '${req.body.fbLink}',
             birthdate = '${req.body.birthdate}'
           where student_id = '${req.body.studentNo}'`
         )
         res.send({
-          message: 'Success registering student',
+          message: 'Success updating student',
           error: null
         });
         done()
