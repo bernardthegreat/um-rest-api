@@ -44,6 +44,7 @@ router.get("/", (req, res) => {
             first_name,
             middle_name,
             last_name,
+            birthdate,
             email_address,
             active, contact_number,
             fb_link,
@@ -77,6 +78,7 @@ router.get("/set-student-files", (req, res) => {
             first_name,
             middle_name,
             last_name,
+            birthdate,
             email_address,
             active, contact_number,
             fb_link,
@@ -268,9 +270,6 @@ router.post("/secure-attendance", (req, res) => {
   })();
 });
 
-
-
-
 router.post("/answer-question", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
@@ -297,8 +296,6 @@ router.post("/answer-question", (req, res) => {
     });
   })();
 });
-
-
 
 
 function randomString(length, chars) {
