@@ -50,9 +50,8 @@ router.get("/", (req, res) => {
             student_id,
             datetime_created,
             attendance,
-            answer,
-            hash_key,
-            birthdate
+            question,
+            answer
           FROM um_student_information.students
             ${sqlWhere}
           order by last_name asc
