@@ -84,6 +84,7 @@ router.get("/set-student-files", (req, res) => {
             student_id,
             datetime_created,
             attendance,
+            question,
             answer
           FROM um_student_information.students
           order by last_name asc`
@@ -121,6 +122,7 @@ router.post("/register-student", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
       try {
+
         await pgConfig.query(
           `CALL um_student_information.sp_InsertStudent (
             '${req.body.studentNo}',
@@ -278,7 +280,8 @@ router.post("/answer-question", (req, res) => {
           UPDATE 
             um_student_information.students
           SET 
-            answer = '${req.body.answer}'
+            answer = '${req.body.answer}',
+            question = '${req.body.question}'
           where student_id = '${req.body.studentNo}'`
         )
         res.send({
