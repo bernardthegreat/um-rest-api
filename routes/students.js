@@ -52,7 +52,12 @@ router.get("/", (req, res) => {
             datetime_created,
             attendance,
             question,
-            answer
+            answer,
+            answer_datetime,
+            first_role,
+            second_role,
+            third_role,
+            final_role
           FROM um_student_information.students
             ${sqlWhere}
           order by last_name asc
@@ -86,7 +91,12 @@ router.get("/set-student-files", (req, res) => {
             datetime_created,
             attendance,
             question,
-            answer
+            answer,
+            answer_datetime,
+            first_role,
+            second_role,
+            third_role,
+            final_role
           FROM um_student_information.students
           order by last_name asc`
         )
@@ -279,7 +289,8 @@ router.post("/answer-question", (req, res) => {
             um_student_information.students
           SET 
             answer = '${req.body.answer}',
-            question = '${req.body.question}'
+            question = '${req.body.question}',
+            answer_datetime = NOW()
           where student_id = '${req.body.studentNo}'`
         )
         res.send({
