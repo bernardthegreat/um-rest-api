@@ -57,7 +57,8 @@ router.get("/", (req, res) => {
             first_role,
             second_role,
             third_role,
-            final_role
+            final_role,
+            role_results
           FROM um_student_information.students
             ${sqlWhere}
           order by last_name asc
@@ -96,7 +97,8 @@ router.get("/set-student-files", (req, res) => {
             first_role,
             second_role,
             third_role,
-            final_role
+            final_role,
+            role_results
           FROM um_student_information.students
           order by last_name asc`
         )
@@ -219,6 +221,38 @@ router.post("/update-student", (req, res) => {
   })();
 });
 
+
+router.post("/save-role", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            first_role = '${req.body.firstRole}',
+            second_role = '${req.body.secondRole}',
+            third_role = '${req.body.thirdRole}',
+            role_results = '${req.body.roleResults.replace(/"/g, "")}'
+          where student_id = '${req.body.studentNo}'`
+        )
+        
+        
+        res.send({
+          message: 'Success saving roles of Students',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
 router.post("/attendance", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
@@ -293,6 +327,13 @@ router.post("/answer-question", (req, res) => {
             answer_datetime = NOW()
           where student_id = '${req.body.studentNo}'`
         )
+        console.log(`UPDATE 
+        um_student_information.students
+      SET 
+        answer = '${req.body.answer}',
+        question = '${req.body.question}',
+        answer_datetime = NOW()
+      where student_id = '${req.body.studentNo}'`)
         res.send({
           message: 'Success saving answer of student',
           error: null
