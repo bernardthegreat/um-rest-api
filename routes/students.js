@@ -57,6 +57,7 @@ router.get("/", (req, res) => {
             first_role,
             second_role,
             third_role,
+            fourth_role,
             final_role,
             role_results
           FROM um_student_information.students
