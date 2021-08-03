@@ -74,6 +74,7 @@ router.get("/", (req, res) => {
   })();
 });
 
+
 router.get("/set-student-files", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
@@ -306,6 +307,34 @@ router.post("/secure-attendance", (req, res) => {
       } catch (error) {
         res.send({
           hashKey: null,
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+router.post("/update-fourth-role", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        
+
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            fourth_role = '${req.body.fourthRole}'
+          where student_id = '${req.body.studentNo}'`
+        )
+        res.send({
+          message: 'Success updating official role of student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
           message: null,
           error: error
         });
