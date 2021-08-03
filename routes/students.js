@@ -354,7 +354,8 @@ router.post("/update-official-role", (req, res) => {
           UPDATE 
             um_student_information.students
           SET 
-            final_role = '${req.body.role}'
+            final_role = '${req.body.role}',
+            group = '${req.body.group}'
           where student_id = '${req.body.studentNo}'`
         )
         res.send({
