@@ -61,6 +61,7 @@ router.get("/", (req, res) => {
             fourth_role,
             final_role,
             role_results,
+            group_name,
             google_drive
           FROM um_student_information.students
             ${sqlWhere}
@@ -261,18 +262,18 @@ router.post("/update-student", (req, res) => {
     pgConfig.connect(async function(err, client, done) {
       try {
         await pgConfig.query(`
-          UPDATE 
-            um_student_information.students
-          SET 
-            first_name = '${req.body.firstName}',
-            middle_name = '${req.body.middleName}',
-            last_name = '${req.body.lastName}',
-            email_address = '${req.body.emailAddress}',
-            contact_number = '${req.body.contactNumber}',
-            fb_link = '${req.body.fbLink}',
-            birthdate = '${req.body.birthdate}'
-          where student_id = '${req.body.studentNo}'`
-        )
+            UPDATE 
+              um_student_information.students
+            SET 
+              first_name = '${req.body.firstName}',
+              middle_name = '${req.body.middleName}',
+              last_name = '${req.body.lastName}',
+              email_address = '${req.body.emailAddress}',
+              contact_number = '${req.body.contactNumber}',
+              fb_link = '${req.body.fbLink}',
+              birthdate = '${req.body.birthdate}'
+            where student_id = '${req.body.studentNo}'
+          `)
         res.send({
           message: 'Success updating student',
           error: null
