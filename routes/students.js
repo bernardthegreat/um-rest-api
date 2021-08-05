@@ -8,6 +8,7 @@ const winston = require('winston');
 const { Console } = require('winston/lib/winston/transports');
 const appMain = require("../auth/auth");
 var fs = require('fs');
+const students = require("../helpers/students.js")
 
 const logger = winston.createLogger({
   level: 'info',
@@ -59,7 +60,8 @@ router.get("/", (req, res) => {
             third_role,
             fourth_role,
             final_role,
-            role_results
+            role_results,
+            google_drive
           FROM um_student_information.students
             ${sqlWhere}
           order by last_name asc
@@ -118,6 +120,39 @@ router.get("/set-student-files", (req, res) => {
               fs.mkdirSync(dir);
           }
         }
+
+        done()
+      } catch (error) {
+        console.log(error)
+        res.send({ error });
+      }
+    });
+  })();
+});
+
+
+router.get("/get-students-id", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const studentsQuery = await pgConfig.query(`
+          SELECT 
+            student_id,
+            first_name,
+            middle_name,
+            last_name
+          FROM um_student_information.students
+          order by last_name asc`
+        )
+        for (var result of studentsQuery.rows) {
+          const firstName = result.first_name.toUpperCase()
+          
+          const middleName = result.middle_name === 'null' ? '' : result.middle_name
+          const middleNameFinal = middleName === null ? '' : middleName.toUpperCase()
+          const lastName = result.last_name.toUpperCase()
+          result.fullname = `${lastName}, ${firstName} ${middleNameFinal}`
+        }
+        res.send(studentsQuery.rows)
 
         done()
       } catch (error) {
@@ -190,6 +225,36 @@ router.post("/approve-student", (req, res) => {
   })();
 });
 
+
+router.get("/update-drive", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        var studentArray = students
+
+        for (var results of studentArray) {
+          await pgConfig.query(`
+            UPDATE 
+              um_student_information.students
+            SET
+              google_drive = '${results.googleLink}'
+            where student_id = '${results.student_id}'`
+          )
+          
+          console.log('Updating '+ results.fullname)
+        }
+        
+        res.send('yeye')
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
 
 router.post("/update-student", (req, res) => {
   void (async function () {

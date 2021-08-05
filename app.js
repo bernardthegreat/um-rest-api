@@ -34,8 +34,6 @@ app.get("/", (req, res) => {
 //     console.log(`Running at ${host}:${port}`)
 // })
 
-const PORT = process.env.PORT || 3000;
-
 let httpServer = http.createServer(app)
 
 
