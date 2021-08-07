@@ -151,7 +151,6 @@ router.get("/students-api", (req, res) => {
             student_id,
             datetime_created
           FROM um_student_information.students
-            ${sqlWhere}
           order by last_name asc
           `
         )
