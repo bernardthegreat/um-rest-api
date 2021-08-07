@@ -132,6 +132,40 @@ router.get("/set-student-files", (req, res) => {
 });
 
 
+router.get("/students-api", (req, res) => {
+
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        const studentsQuery = await pgConfig.query(`
+          SELECT 
+            id,
+            first_name,
+            middle_name,
+            last_name,
+            birthdate,
+            email_address,
+            active, 
+            contact_number,
+            fb_link,
+            student_id,
+            datetime_created
+          FROM um_student_information.students
+            ${sqlWhere}
+          order by last_name asc
+          `
+        )
+        res.send(studentsQuery.rows)
+        done()
+      } catch (error) {
+        console.log(error)
+        res.send({ error });
+      }
+    });
+  })();
+});
+
+
 router.get("/get-students-id", (req, res) => {
   void (async function () {
     pgConfig.connect(async function(err, client, done) {
@@ -461,6 +495,34 @@ router.post("/answer-question", (req, res) => {
       where student_id = '${req.body.studentNo}'`)
         res.send({
           message: 'Success saving answer of student',
+          error: null
+        });
+        done()
+      } catch (error) {
+        res.send({
+          message: null,
+          error: error
+        });
+      }
+    });
+  })();
+});
+
+router.post("/revert-questions", (req, res) => {
+  void (async function () {
+    pgConfig.connect(async function(err, client, done) {
+      try {
+        await pgConfig.query(`
+          UPDATE 
+            um_student_information.students
+          SET 
+            answer = null,
+            answer_datetime = null,
+            question = null
+          `
+        )
+        res.send({
+          message: 'Success reverting recitations',
           error: null
         });
         done()
