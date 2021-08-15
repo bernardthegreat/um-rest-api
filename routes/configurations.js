@@ -49,13 +49,13 @@ router.get("/", (req, res) => {
             um_student_information.configurations`
         )
         res.send(configurations.rows)
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
       }
     });
-    pgConfig.end()
   })();
 });
 
