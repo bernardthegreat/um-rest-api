@@ -55,13 +55,14 @@ router.get("/", (req, res) => {
             um_student_information.announcements`
         )
         res.send(announcements.rows)
-        done()
+        client.release()
+        pgConfig.end()
+        // done()
       } catch (error) {
         console.log(error)
         res.send({ error });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -94,7 +95,8 @@ router.post("/add-announcement", (req, res) => {
           message: 'Success registering announcement',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -102,7 +104,6 @@ router.post("/add-announcement", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -129,7 +130,8 @@ router.post("/update-announcement", (req, res) => {
           message: 'Success updating announcement',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -137,7 +139,6 @@ router.post("/update-announcement", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -166,7 +167,8 @@ router.post("/ask-question", (req, res) => {
         pusher.trigger("my-channel", "my-event", {
           message: "recitation"
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -174,7 +176,6 @@ router.post("/ask-question", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 

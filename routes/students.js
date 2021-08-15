@@ -69,13 +69,13 @@ router.get("/", (req, res) => {
           `
         )
         res.send(studentsQuery.rows)
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -123,13 +123,13 @@ router.get("/set-student-files", (req, res) => {
           }
         }
 
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -157,13 +157,13 @@ router.get("/students-api", (req, res) => {
           `
         )
         res.send(studentsQuery.rows)
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -191,13 +191,13 @@ router.get("/get-students-id", (req, res) => {
         }
         res.send(studentsQuery.rows)
 
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -226,7 +226,8 @@ router.post("/register-student", (req, res) => {
           message: 'Success registering student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -234,7 +235,6 @@ router.post("/register-student", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -253,7 +253,8 @@ router.post("/approve-student", (req, res) => {
           message: 'Success registering student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -261,7 +262,6 @@ router.post("/approve-student", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -285,7 +285,8 @@ router.get("/update-drive", (req, res) => {
         }
         
         res.send('yeye')
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -293,7 +294,6 @@ router.get("/update-drive", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -318,7 +318,8 @@ router.post("/update-student", (req, res) => {
           message: 'Success updating student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -326,7 +327,6 @@ router.post("/update-student", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -351,7 +351,8 @@ router.post("/save-role", (req, res) => {
           message: 'Success saving roles of Students',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -359,7 +360,6 @@ router.post("/save-role", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -378,7 +378,8 @@ router.post("/attendance", (req, res) => {
           message: 'Success saving attendance of student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -386,7 +387,6 @@ router.post("/attendance", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -413,7 +413,8 @@ router.post("/secure-attendance", (req, res) => {
           message: 'Success securing attendance of student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           hashKey: null,
@@ -422,7 +423,6 @@ router.post("/secure-attendance", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -443,7 +443,8 @@ router.post("/update-fourth-role", (req, res) => {
           message: 'Success updating official role of student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -451,7 +452,6 @@ router.post("/update-fourth-role", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -473,7 +473,8 @@ router.post("/update-official-role", (req, res) => {
           message: 'Success updating official role of student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -481,7 +482,6 @@ router.post("/update-official-role", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -509,7 +509,8 @@ router.post("/answer-question", (req, res) => {
           message: 'Success saving answer of student',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -517,7 +518,6 @@ router.post("/answer-question", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
@@ -538,7 +538,8 @@ router.post("/revert-questions", (req, res) => {
           message: 'Success reverting recitations',
           error: null
         });
-        done()
+        client.release()
+        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -546,7 +547,6 @@ router.post("/revert-questions", (req, res) => {
         });
       }
     });
-    pgConfig.end()
   })();
 });
 
