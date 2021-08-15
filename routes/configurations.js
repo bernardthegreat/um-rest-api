@@ -50,7 +50,6 @@ router.get("/", (req, res) => {
         )
         res.send(configurations.rows)
         client.release()
-        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });

@@ -56,7 +56,6 @@ router.get("/", (req, res) => {
         )
         res.send(announcements.rows)
         client.release()
-        pgConfig.end()
         // done()
       } catch (error) {
         console.log(error)
@@ -96,7 +95,6 @@ router.post("/add-announcement", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -131,7 +129,6 @@ router.post("/update-announcement", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -168,7 +165,6 @@ router.post("/ask-question", (req, res) => {
           message: "recitation"
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,

@@ -70,7 +70,6 @@ router.get("/", (req, res) => {
         )
         res.send(studentsQuery.rows)
         client.release()
-        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
@@ -124,7 +123,6 @@ router.get("/set-student-files", (req, res) => {
         }
 
         client.release()
-        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
@@ -158,7 +156,6 @@ router.get("/students-api", (req, res) => {
         )
         res.send(studentsQuery.rows)
         client.release()
-        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
@@ -192,7 +189,6 @@ router.get("/get-students-id", (req, res) => {
         res.send(studentsQuery.rows)
 
         client.release()
-        pgConfig.end()
       } catch (error) {
         console.log(error)
         res.send({ error });
@@ -227,7 +223,6 @@ router.post("/register-student", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -254,7 +249,6 @@ router.post("/approve-student", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -286,7 +280,6 @@ router.get("/update-drive", (req, res) => {
         
         res.send('yeye')
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -319,7 +312,6 @@ router.post("/update-student", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -352,7 +344,6 @@ router.post("/save-role", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -379,7 +370,6 @@ router.post("/attendance", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -414,7 +404,6 @@ router.post("/secure-attendance", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           hashKey: null,
@@ -444,7 +433,6 @@ router.post("/update-fourth-role", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -474,7 +462,6 @@ router.post("/update-official-role", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -510,7 +497,6 @@ router.post("/answer-question", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
@@ -539,7 +525,6 @@ router.post("/revert-questions", (req, res) => {
           error: null
         });
         client.release()
-        pgConfig.end()
       } catch (error) {
         res.send({
           message: null,
