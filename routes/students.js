@@ -75,6 +75,7 @@ router.get("/", (req, res) => {
         res.send({ error });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -128,6 +129,7 @@ router.get("/set-student-files", (req, res) => {
         res.send({ error });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -161,6 +163,7 @@ router.get("/students-api", (req, res) => {
         res.send({ error });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -194,6 +197,7 @@ router.get("/get-students-id", (req, res) => {
         res.send({ error });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -230,6 +234,7 @@ router.post("/register-student", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -256,6 +261,7 @@ router.post("/approve-student", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -287,6 +293,7 @@ router.get("/update-drive", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -319,6 +326,7 @@ router.post("/update-student", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -351,6 +359,7 @@ router.post("/save-role", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -377,6 +386,7 @@ router.post("/attendance", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -412,6 +422,7 @@ router.post("/secure-attendance", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -440,6 +451,7 @@ router.post("/update-fourth-role", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -469,6 +481,7 @@ router.post("/update-official-role", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -504,6 +517,7 @@ router.post("/answer-question", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -532,6 +546,7 @@ router.post("/revert-questions", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 

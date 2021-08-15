@@ -61,6 +61,7 @@ router.get("/", (req, res) => {
         res.send({ error });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -101,6 +102,7 @@ router.post("/add-announcement", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -135,6 +137,7 @@ router.post("/update-announcement", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 
@@ -171,6 +174,7 @@ router.post("/ask-question", (req, res) => {
         });
       }
     });
+    pgConfig.end()
   })();
 });
 

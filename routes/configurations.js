@@ -55,6 +55,7 @@ router.get("/", (req, res) => {
         res.send({ error });
       }
     });
+    pgConfig.end()
   })();
 });
 
