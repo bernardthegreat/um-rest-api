@@ -40,30 +40,35 @@ router.get("/", (req, res) => {
   //   return;
   // }
   void (async function () {
-    pgConfig.connect(async function(err, client, done) {
-      try {
-        const announcements = await pgConfig.query(`
-          SELECT 
-            id,
-            name,
-            content,
-            pinned,
-            active,
-            datetime_created,
-            type
-          FROM 
-            um_student_information.announcements`
-        )
-        res.send(announcements.rows)
-        client.release()
-        // done()
-      } catch (error) {
-        console.log(error)
-        res.send({ error });
-      }
-    });
+    try {
+      pgConfig.connect(async function(err, client, done) {
+        try {
+          const announcements = await pgConfig.query(`
+            SELECT 
+              id,
+              name,
+              content,
+              pinned,
+              active,
+              datetime_created,
+              type
+            FROM 
+              um_student_information.announcements`
+          )
+          res.send(announcements.rows)
+          client.release()
+          // done()
+        } catch (error) {
+          console.log(error)
+          res.send({ error });
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
   })();
 });
+
 
 
 router.post("/add-announcement", (req, res) => {
@@ -72,36 +77,40 @@ router.post("/add-announcement", (req, res) => {
   //   return;
   // }
   void (async function () {
-    pgConfig.connect(async function(err, client, done) {
-      try {
-        await pgConfig.query(
-          `INSERT INTO um_student_information.announcements (
-            name,
-            content,
-            pinned,
-            active,
-            type
+    try {
+      pgConfig.connect(async function(err, client, done) {
+        try {
+          await pgConfig.query(
+            `INSERT INTO um_student_information.announcements (
+              name,
+              content,
+              pinned,
+              active,
+              type
+            )
+            VALUES (
+              '${req.body.name}',
+              '${req.body.content}',
+              '${req.body.pinned}',
+              '${req.body.active}',
+              '${req.body.type}'
+            )`
           )
-          VALUES (
-            '${req.body.name}',
-            '${req.body.content}',
-            '${req.body.pinned}',
-            '${req.body.active}',
-            '${req.body.type}'
-          )`
-        )
-        res.send({
-          message: 'Success registering announcement',
-          error: null
-        });
-        client.release()
-      } catch (error) {
-        res.send({
-          message: null,
-          error: error
-        });
-      }
-    });
+          res.send({
+            message: 'Success registering announcement',
+            error: null
+          });
+          client.release()
+        } catch (error) {
+          res.send({
+            message: null,
+            error: error
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
   })();
 });
 
@@ -111,31 +120,35 @@ router.post("/update-announcement", (req, res) => {
   //   return;
   // }
   void (async function () {
-    pgConfig.connect(async function(err, client, done) {
-      try {
-        await pgConfig.query(`
-          UPDATE 
-            um_student_information.announcements
-          SET
-            name = '${req.body.name}',
-            pinned = '${req.body.pinned}',
-            content = '${req.body.content}',
-            active = '${req.body.active}',
-            type = '${req.body.type}'
-          where id = '${req.body.announcementID}'
-        `)
-        res.send({
-          message: 'Success updating announcement',
-          error: null
-        });
-        client.release()
-      } catch (error) {
-        res.send({
-          message: null,
-          error: error
-        });
-      }
-    });
+    try {
+      pgConfig.connect(async function(err, client, done) {
+        try {
+          await pgConfig.query(`
+            UPDATE 
+              um_student_information.announcements
+            SET
+              name = '${req.body.name}',
+              pinned = '${req.body.pinned}',
+              content = '${req.body.content}',
+              active = '${req.body.active}',
+              type = '${req.body.type}'
+            where id = '${req.body.announcementID}'
+          `)
+          res.send({
+            message: 'Success updating announcement',
+            error: null
+          });
+          client.release()
+        } catch (error) {
+          res.send({
+            message: null,
+            error: error
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
   })();
 });
 
@@ -145,33 +158,37 @@ router.post("/ask-question", (req, res) => {
   //   return;
   // }
   void (async function () {
-    pgConfig.connect(async function(err, client, done) {
-      try {
-        await pgConfig.query(`
-          UPDATE 
-            um_student_information.announcements
-          SET
-            name = '${req.body.name}',
-            content = '${req.body.content}',
-            active = '${req.body.active}',
-            type = '${req.body.type}'
-          where id = '3'
-        `)
-        res.send({
-          message: 'Success adding question',
-          error: null
-        });
-        pusher.trigger("my-channel", "my-event", {
-          message: "recitation"
-        });
-        client.release()
-      } catch (error) {
-        res.send({
-          message: null,
-          error: error
-        });
-      }
-    });
+    try {
+      pgConfig.connect(async function(err, client, done) {
+        try {
+          await pgConfig.query(`
+            UPDATE 
+              um_student_information.announcements
+            SET
+              name = '${req.body.name}',
+              content = '${req.body.content}',
+              active = '${req.body.active}',
+              type = '${req.body.type}'
+            where id = '3'
+          `)
+          res.send({
+            message: 'Success adding question',
+            error: null
+          });
+          pusher.trigger("my-channel", "my-event", {
+            message: "recitation"
+          });
+          client.release()
+        } catch (error) {
+          res.send({
+            message: null,
+            error: error
+          });
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
   })();
 });
 
